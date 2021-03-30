@@ -38,16 +38,17 @@ namespace MusicLibraryAPI.Controllers
 
         // POST api/<MusicController>
         [HttpPost]
-        public void Post([FromBody] Song songToAdd)
+        public Song Post([FromBody] Song songToAdd)
         {
             _context.Songs.Add(songToAdd);
             _context.SaveChanges();
             //display 201 Created Song Successfully
+            return songToAdd;
         }
 
         // PUT api/<MusicController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Song UpdatedSong)
+        public Song Put(int id, [FromBody] Song UpdatedSong)
         {
 
             Song songToUpdate = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
@@ -59,6 +60,8 @@ namespace MusicLibraryAPI.Controllers
             songToUpdate.ReleaseDate = UpdatedSong.ReleaseDate;
             _context.Update(songToUpdate);
             _context.SaveChanges();
+
+            return songToUpdate;
 
         }
 
