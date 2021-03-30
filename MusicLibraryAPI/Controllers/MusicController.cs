@@ -38,8 +38,11 @@ namespace MusicLibraryAPI.Controllers
 
         // POST api/<MusicController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Song songToAdd)
         {
+            _context.Songs.Add(songToAdd);
+            _context.SaveChanges();
+            //display 201 Created Song Successfully
         }
 
         // PUT api/<MusicController>/5
