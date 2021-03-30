@@ -50,7 +50,8 @@ namespace MusicLibraryAPI.Controllers
 
         // PUT api/<MusicController>/5
         [HttpPut("{id}")]
-        public Song Put(int id, [FromBody] Song UpdatedSong)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        public IActionResult Put(int id, [FromBody] Song UpdatedSong)
         {
 
             Song songToUpdate = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
@@ -62,8 +63,8 @@ namespace MusicLibraryAPI.Controllers
             songToUpdate.ReleaseDate = UpdatedSong.ReleaseDate;
             _context.Update(songToUpdate);
             _context.SaveChanges();
-
-            return songToUpdate;
+            
+            return Ok(songToUpdate);
 
         }
 
