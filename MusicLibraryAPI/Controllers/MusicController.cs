@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MusicLibraryAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[MusicController]")]
     [ApiController]
     public class MusicController : ControllerBase
     {
