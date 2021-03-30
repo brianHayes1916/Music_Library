@@ -31,10 +31,11 @@ namespace MusicLibraryAPI.Controllers
 
         // GET api/<MusicController>/5
         [HttpGet("{id}")]
-        public Song Get(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        public IActionResult Get(int id)
         {
             Song ThatOneSong = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
-            return ThatOneSong;
+            return Ok(ThatOneSong);
         }
 
         // POST api/<MusicController>
