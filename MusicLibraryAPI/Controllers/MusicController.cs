@@ -23,10 +23,11 @@ namespace MusicLibraryAPI.Controllers
         }
         // GET: api/<MusicController>
         [HttpGet]
-        public IEnumerable<Song> Get()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        public IActionResult Get()
         {
             List<Song> allSongs = _context.Songs.Select(song => song).ToList();
-            return allSongs;
+            return Ok(allSongs);
         }
 
         // GET api/<MusicController>/5
