@@ -30,9 +30,10 @@ namespace MusicLibraryAPI.Controllers
 
         // GET api/<MusicController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Song Get(int id)
         {
-            return "value";
+            Song ThatOneSong = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+            return ThatOneSong;
         }
 
         // POST api/<MusicController>
