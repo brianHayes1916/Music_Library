@@ -47,8 +47,19 @@ namespace MusicLibraryAPI.Controllers
 
         // PUT api/<MusicController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Song UpdatedSong)
         {
+
+            Song songToUpdate = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+
+
+            songToUpdate.Album = UpdatedSong.Album;
+            songToUpdate.Artist = UpdatedSong.Artist;
+            songToUpdate.Title = UpdatedSong.Title;
+            songToUpdate.ReleaseDate = UpdatedSong.ReleaseDate;
+            _context.Update(songToUpdate);
+            _context.SaveChanges();
+
         }
 
         // DELETE api/<MusicController>/5
