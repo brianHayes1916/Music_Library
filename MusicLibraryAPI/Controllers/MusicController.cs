@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using MusicLibraryAPI.Data;
 using MusicLibraryAPI.Models;
 using System;
@@ -38,12 +39,13 @@ namespace MusicLibraryAPI.Controllers
 
         // POST api/<MusicController>
         [HttpPost]
-        public Song Post([FromBody] Song songToAdd)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Song))]
+        public IActionResult Post([FromBody] Song songToAdd)
         {
             _context.Songs.Add(songToAdd);
             _context.SaveChanges();
-            //display 201 Created Song Successfully
-            return songToAdd;
+
+            return Created("api/MusicController", songToAdd);
         }
 
         // PUT api/<MusicController>/5
