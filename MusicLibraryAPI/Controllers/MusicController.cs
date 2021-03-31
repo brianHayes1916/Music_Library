@@ -123,6 +123,7 @@ namespace MusicLibraryAPI.Controllers
             songDTO.Id = song.Id;
             songDTO.ReleaseDate = song.ReleaseDate;
             songDTO.Title = song.Title;
+            songDTO.DisplayLikes = song.Likes;
             return songDTO;
         }
         public Song DTOToSong(SongDTO songDTO)
