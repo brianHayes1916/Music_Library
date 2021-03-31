@@ -29,29 +29,6 @@
 			"response": []
 		},
 		{
-			"name": "Get_All_Songs_BH",
-			"protocolProfileBehavior": {
-				"strictSSL": false
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://localhost:44325/api/MusicController",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44325",
-					"path": [
-						"api",
-						"MusicController"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Add_Song_BH",
 			"protocolProfileBehavior": {
 				"strictSSL": false
@@ -93,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 5,\r\n    \"title\": \"Yellow Submarine\",\r\n    \"artist\": \"The Beatles\",\r\n    \"album\": \"Walking across St\",\r\n    \"releaseDate\": \"1971\"\r\n}",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"title\": \"Imagine\",\r\n    \"artist\": \"The Beatles\",\r\n    \"album\": \"Walking across St\",\r\n    \"releaseDate\": \"1971\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -125,7 +102,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": " {\r\n        \"title\": \"Princess Andy\",\r\n        \"artist\": \"Petrozjic blasting company\",\r\n        \"album\": \"Petrozjic blasting company\",\r\n        \"releaseDate\": \"2121\",\r\n        \"likesSong\": true,\r\n        \"displayLikes\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -133,7 +110,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44325/api/MusicController",
+					"raw": "https://localhost:44325/api/MusicController/?Id=1",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -141,7 +118,14 @@
 					"port": "44325",
 					"path": [
 						"api",
-						"MusicController"
+						"MusicController",
+						""
+					],
+					"query": [
+						{
+							"key": "Id",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -156,7 +140,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44325/api/MusicController/2",
+					"raw": "https://localhost:44325/api/MusicController/?Id=3",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -165,7 +149,13 @@
 					"path": [
 						"api",
 						"MusicController",
-						"2"
+						""
+					],
+					"query": [
+						{
+							"key": "Id",
+							"value": "3"
+						}
 					]
 				}
 			},
