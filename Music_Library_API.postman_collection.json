@@ -110,7 +110,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44325/api/MusicController/?Id=1",
+					"raw": "https://localhost:44325/api/MusicController/1",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -119,13 +119,7 @@
 					"path": [
 						"api",
 						"MusicController",
-						""
-					],
-					"query": [
-						{
-							"key": "Id",
-							"value": "1"
-						}
+						"1"
 					]
 				}
 			},
@@ -140,7 +134,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44325/api/MusicController/?Id=3",
+					"raw": "https://localhost:44325/api/MusicController/3",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -149,13 +143,7 @@
 					"path": [
 						"api",
 						"MusicController",
-						""
-					],
-					"query": [
-						{
-							"key": "Id",
-							"value": "3"
-						}
+						"3"
 					]
 				}
 			},
