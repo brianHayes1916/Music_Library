@@ -82,5 +82,25 @@ namespace MusicLibraryAPI.Controllers
 
             return Ok(songToDelete);
         }
+
+        public List<SongDTO> SongConverter(List<Song> songs)
+        {
+            List<SongDTO> Dtos = null;
+            foreach (Song song in songs)
+            {
+                Dtos.Add(SongToDto(song));
+            }
+            return Dtos;
+        }
+        public SongDTO SongToDto(Song song)
+        {
+            SongDTO songDTO = null;
+            songDTO.Album = song.Album;
+            songDTO.Artist = song.Artist;
+            songDTO.Id = song.Id;
+            songDTO.ReleaseDate = song.ReleaseDate;
+            songDTO.Title = song.Title;
+            return songDTO;
+        }
     }
 }
