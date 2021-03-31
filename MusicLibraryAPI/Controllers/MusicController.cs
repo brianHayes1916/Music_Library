@@ -70,6 +70,12 @@ namespace MusicLibraryAPI.Controllers
             songDTOToUpdate.ReleaseDate = UpdatedSongDTO.ReleaseDate;
 
             Song songToUpdate = DTOToSong(songDTOToUpdate);
+            if (UpdatedSongDTO.LikesSong)
+            {
+                songDTOToUpdate.LikesSong = false;
+                songToUpdate.Likes++;
+            }
+            songDTOToUpdate.DisplayLikes = songToUpdate.Likes;
             _context.Update(songToUpdate);
             _context.SaveChanges();
             songDTOs = SongsConverter(_context.Songs.ToList());
@@ -115,12 +121,20 @@ namespace MusicLibraryAPI.Controllers
         public Song DTOToSong(SongDTO songDTO)
         {
             Song song = new Song();
-            song.Album = songDTO.Album;
-            song.Artist = songDTO.Artist;
-            song.Id = songDTO.Id;
-            song.ReleaseDate = songDTO.ReleaseDate;
-            song.Title = songDTO.Title;
+            if (songDTO.Id > 0)
+            {
+                song = _context.Songs.Where(sg => sg.Id == songDTO.Id).FirstOrDefault();
+            }
+            else
+            {
+                song.Album = songDTO.Album;
+                song.Artist = songDTO.Artist;
+                song.Id = songDTO.Id;
+                song.ReleaseDate = songDTO.ReleaseDate;
+                song.Title = songDTO.Title;
+            }
             return song;
+        
         }
         public List<Song> SongDTOsConverter(List<SongDTO> songDTOs)
         {
