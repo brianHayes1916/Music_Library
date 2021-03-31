@@ -58,30 +58,37 @@ namespace MusicLibraryAPI.Controllers
 
         // PUT api/<MusicController>/5
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SongDTO))]
         public IActionResult Put(int id, [FromBody] SongDTO UpdatedSongDTO)
         {
 
             SongDTO songDTOToUpdate = songDTOs.Where(song => song.Id == id).FirstOrDefault();
-
-            songDTOToUpdate.Album = UpdatedSongDTO.Album;
-            songDTOToUpdate.Artist = UpdatedSongDTO.Artist;
-            songDTOToUpdate.Title = UpdatedSongDTO.Title;
-            songDTOToUpdate.ReleaseDate = UpdatedSongDTO.ReleaseDate;
-
-            Song songToUpdate = DTOToSong(songDTOToUpdate);
-            if (UpdatedSongDTO.LikesSong)
+            try
             {
-                songDTOToUpdate.LikesSong = false;
-                songToUpdate.Likes++;
+                songDTOToUpdate.Album = UpdatedSongDTO.Album;
+                songDTOToUpdate.Artist = UpdatedSongDTO.Artist;
+                songDTOToUpdate.Title = UpdatedSongDTO.Title;
+                songDTOToUpdate.ReleaseDate = UpdatedSongDTO.ReleaseDate;
+
+                Song songToUpdate = DTOToSong(songDTOToUpdate);
+                if (UpdatedSongDTO.LikesSong)
+                {
+                    songDTOToUpdate.LikesSong = false;
+                    songToUpdate.Likes++;
+                }
+                songDTOToUpdate.DisplayLikes = songToUpdate.Likes;
+                _context.Update(songToUpdate);
+                _context.SaveChanges();
+                songDTOs = SongsConverter(_context.Songs.ToList());
+
+                return Ok(songDTOToUpdate);
             }
-            songDTOToUpdate.DisplayLikes = songToUpdate.Likes;
-            _context.Update(songToUpdate);
-            _context.SaveChanges();
-            songDTOs = SongsConverter(_context.Songs.ToList());
-
-            return Ok(songDTOToUpdate);
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Something went wrong: {ex}");
+                return StatusCode(400, "Bad Request, Object Not found");
+            }
         }
 
         // DELETE api/<MusicController>/5
@@ -125,14 +132,11 @@ namespace MusicLibraryAPI.Controllers
             {
                 song = _context.Songs.Where(sg => sg.Id == songDTO.Id).FirstOrDefault();
             }
-            else
-            {
-                song.Album = songDTO.Album;
-                song.Artist = songDTO.Artist;
-                song.Id = songDTO.Id;
-                song.ReleaseDate = songDTO.ReleaseDate;
-                song.Title = songDTO.Title;
-            }
+            song.Album = songDTO.Album;
+            song.Artist = songDTO.Artist;
+            song.Id = songDTO.Id;
+            song.ReleaseDate = songDTO.ReleaseDate;
+            song.Title = songDTO.Title;
             return song;
         
         }
