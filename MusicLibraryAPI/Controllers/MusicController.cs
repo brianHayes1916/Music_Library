@@ -51,6 +51,7 @@ namespace MusicLibraryAPI.Controllers
             Song songToAdd = DTOToSong(songDTOToAdd);
             _context.Songs.Add(songToAdd);
             _context.SaveChanges();
+            songDTOs = SongsConverter(_context.Songs.ToList());
 
             return Created("api/MusicController", songDTOToAdd);
         }
@@ -63,29 +64,33 @@ namespace MusicLibraryAPI.Controllers
 
             SongDTO songDTOToUpdate = songDTOs.Where(song => song.Id == id).FirstOrDefault();
 
-
             songDTOToUpdate.Album = UpdatedSongDTO.Album;
             songDTOToUpdate.Artist = UpdatedSongDTO.Artist;
             songDTOToUpdate.Title = UpdatedSongDTO.Title;
             songDTOToUpdate.ReleaseDate = UpdatedSongDTO.ReleaseDate;
+
             Song songToUpdate = DTOToSong(songDTOToUpdate);
             _context.Update(songToUpdate);
             _context.SaveChanges();
-            
+            songDTOs = SongsConverter(_context.Songs.ToList());
+
             return Ok(songDTOToUpdate);
 
         }
 
         // DELETE api/<MusicController>/5
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SongDTO))]
         public IActionResult Delete(int id)
         {
-            Song songToDelete = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+            SongDTO songDTOToDelete = songDTOs.Where(song => song.Id == id).FirstOrDefault();
+            Song songToDelete = DTOToSong(songDTOToDelete);
+
             _context.Remove(songToDelete);
             _context.SaveChanges();
+            songDTOs = SongsConverter(_context.Songs.ToList());
 
-            return Ok(songToDelete);
+            return Ok(songDTOToDelete);
         }
 
         public List<SongDTO> SongsConverter(List<Song> songs)
