@@ -20,7 +20,7 @@ namespace MusicLibraryAPI.Controllers
         public MusicController(ApplicationDbContext context)
         {
             _context = context;
-            List<SongDTO> songDTOs = _context.Songs.ToList();
+            List<SongDTO> songDTOs = SongsConverter(_context.Songs.ToList());
         }
         // GET: api/<MusicController>
         [HttpGet]
@@ -83,16 +83,16 @@ namespace MusicLibraryAPI.Controllers
             return Ok(songToDelete);
         }
 
-        public List<SongDTO> SongConverter(List<Song> songs)
+        public List<SongDTO> SongsConverter(List<Song> songs)
         {
             List<SongDTO> Dtos = null;
             foreach (Song song in songs)
             {
-                Dtos.Add(SongToDto(song));
+                Dtos.Add(SongToDTO(song));
             }
             return Dtos;
         }
-        public SongDTO SongToDto(Song song)
+        public SongDTO SongToDTO(Song song)
         {
             SongDTO songDTO = null;
             songDTO.Album = song.Album;
@@ -101,6 +101,25 @@ namespace MusicLibraryAPI.Controllers
             songDTO.ReleaseDate = song.ReleaseDate;
             songDTO.Title = song.Title;
             return songDTO;
+        }
+        public Song DTOToSong(SongDTO songDTO)
+        {
+            Song song = null;
+            song.Album = songDTO.Album;
+            song.Artist = songDTO.Artist;
+            song.Id = songDTO.Id;
+            song.ReleaseDate = songDTO.ReleaseDate;
+            song.Title = songDTO.Title;
+            return song;
+        }
+        public List<Song> SongDTOsConverter(List<SongDTO> songDTOs)
+        {
+            List<Song> songs = null;
+            foreach (SongDTO songDTO in songDTOs)
+            {
+                songs.Add(DTOToSong(songDTO));
+            }
+            return songs;
         }
     }
 }
