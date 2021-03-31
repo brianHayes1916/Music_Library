@@ -20,6 +20,7 @@ namespace MusicLibraryAPI.Controllers
         public MusicController(ApplicationDbContext context)
         {
             _context = context;
+            List<SongDTO> songDTOs = _context.Songs.ToList();
         }
         // GET: api/<MusicController>
         [HttpGet]
