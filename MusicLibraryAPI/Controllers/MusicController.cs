@@ -16,58 +16,63 @@ namespace MusicLibraryAPI.Controllers
     public class MusicController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        public List<SongDTO>  songDTOs;
 
         public MusicController(ApplicationDbContext context)
         {
             _context = context;
-            List<SongDTO> songDTOs = SongsConverter(_context.Songs.ToList());
+            songDTOs = SongsConverter(_context.Songs.ToList());
         }
         // GET: api/<MusicController>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SongDTO))]
         public IActionResult Get()
         {
-            List<Song> allSongs = _context.Songs.Select(song => song).ToList();
-            return Ok(allSongs);
+            //List<Song> allSongs = _context.Songs.Select(song => song).ToList();
+
+            return Ok(songDTOs);
         }
 
         // GET api/<MusicController>/5
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SongDTO))]
         public IActionResult Get(int id)
         {
-            Song ThatOneSong = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+            //Song ThatOneSong = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+            SongDTO ThatOneSong = songDTOs.Where(song => song.Id == id).FirstOrDefault();
             return Ok(ThatOneSong);
         }
 
         // POST api/<MusicController>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Song))]
-        public IActionResult Post([FromBody] Song songToAdd)
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SongDTO))]
+        public IActionResult Post([FromBody] SongDTO songDTOToAdd)
         {
+            Song songToAdd = DTOToSong(songDTOToAdd);
             _context.Songs.Add(songToAdd);
             _context.SaveChanges();
 
-            return Created("api/MusicController", songToAdd);
+            return Created("api/MusicController", songDTOToAdd);
         }
 
         // PUT api/<MusicController>/5
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Song))]
-        public IActionResult Put(int id, [FromBody] Song UpdatedSong)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SongDTO))]
+        public IActionResult Put(int id, [FromBody] SongDTO UpdatedSongDTO)
         {
 
-            Song songToUpdate = _context.Songs.Where(song => song.Id == id).FirstOrDefault();
+            SongDTO songDTOToUpdate = songDTOs.Where(song => song.Id == id).FirstOrDefault();
 
 
-            songToUpdate.Album = UpdatedSong.Album;
-            songToUpdate.Artist = UpdatedSong.Artist;
-            songToUpdate.Title = UpdatedSong.Title;
-            songToUpdate.ReleaseDate = UpdatedSong.ReleaseDate;
+            songDTOToUpdate.Album = UpdatedSongDTO.Album;
+            songDTOToUpdate.Artist = UpdatedSongDTO.Artist;
+            songDTOToUpdate.Title = UpdatedSongDTO.Title;
+            songDTOToUpdate.ReleaseDate = UpdatedSongDTO.ReleaseDate;
+            Song songToUpdate = DTOToSong(songDTOToUpdate);
             _context.Update(songToUpdate);
             _context.SaveChanges();
             
-            return Ok(songToUpdate);
+            return Ok(songDTOToUpdate);
 
         }
 
@@ -85,7 +90,7 @@ namespace MusicLibraryAPI.Controllers
 
         public List<SongDTO> SongsConverter(List<Song> songs)
         {
-            List<SongDTO> Dtos = null;
+            List<SongDTO> Dtos = new List<SongDTO>();
             foreach (Song song in songs)
             {
                 Dtos.Add(SongToDTO(song));
@@ -94,7 +99,7 @@ namespace MusicLibraryAPI.Controllers
         }
         public SongDTO SongToDTO(Song song)
         {
-            SongDTO songDTO = null;
+            SongDTO songDTO = new SongDTO();
             songDTO.Album = song.Album;
             songDTO.Artist = song.Artist;
             songDTO.Id = song.Id;
@@ -104,7 +109,7 @@ namespace MusicLibraryAPI.Controllers
         }
         public Song DTOToSong(SongDTO songDTO)
         {
-            Song song = null;
+            Song song = new Song();
             song.Album = songDTO.Album;
             song.Artist = songDTO.Artist;
             song.Id = songDTO.Id;
@@ -114,7 +119,7 @@ namespace MusicLibraryAPI.Controllers
         }
         public List<Song> SongDTOsConverter(List<SongDTO> songDTOs)
         {
-            List<Song> songs = null;
+            List<Song> songs = new List<Song>();
             foreach (SongDTO songDTO in songDTOs)
             {
                 songs.Add(DTOToSong(songDTO));
